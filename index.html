@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой Кликер</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Golos Text', Arial, sans-serif;
+            background-color: #F8F9FA;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .score-label {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 40px 0 10px 0;
+            color: #333;
+        }
+
+        /* ЗАГЛУШКА ДЛЯ КЛИКЕРА - замените на <img> */
+        .clicker-btn {
+            width: 200px;
+            height: 200px;
+            background-color: #DDDDDD; /* Серая заглушка */
+            border: none;
+            border-radius: 100px;
+            cursor: pointer;
+            margin: 10px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            transition: background-color 0.3s;
+            /* Если вставляете картинку, добавьте: background-size: cover; background-position: center; */
+        }
+
+        .clicker-btn:hover {
+            background-color: #E8E6FF;
+        }
+
+        /* Для картинки раскомментируйте и используйте:
+        .clicker-btn {
+            background-image: url('animal.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        */
+
+        .shop-label {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 20px 0 5px 0;
+            color: #333;
+        }
+
+        .shop-btn {
+            background-color: #6C63FF;
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            font-size: 16px;
+            font-family: 'Golos Text', Arial, sans-serif;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px auto;
+            display: block;
+            width: 180px;
+            height: 40px;
+            transition: background-color 0.3s;
+        }
+
+        .shop-btn:hover:not(:disabled) {
+            background-color: #5A52E0;
+        }
+
+        .shop-btn:disabled {
+            background-color: #CCCCCC;
+            cursor: not-allowed;
+        }
+
+        .skin-btn {
+            width: 200px;
+            height: 200px;
+            background-color: #DDDDDD; /* Серая заглушка */
+            border: none;
+            border-radius: 100px;
+            cursor: pointer;
+            margin: 10px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .skin-btn:hover {
+            background-color: #E8E6FF;
+        }
+
+        /* Для картинки скина:
+        .skin-btn {
+            background-image: 'тигр.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="score-label" id="scoreLabel">🍪 0</div>
+        
+        <!-- ЗАГЛУШКА КЛИКЕРА -->
+        <!-- Чтобы вставить картинку, замените этот button на:
+        <button class="clicker-btn" id="clickBtn" onclick="on_click()" style="background-image: url('animal.jpg'); background-size: cover; background-position: center;"></button>
+        -->
+        <button class="clicker-btn" id="clickBtn" onclick="on_click()">🐾</button>
+        
+        <div class="shop-label">Магазин улучшений</div>
+        
+        <button class="shop-btn" id="shopBtn" onclick="buy()">КУПИТЬ (10)</button>
+        
+        <!-- ЗАГЛУШКА СКИНА -->
+        <!-- Чтобы вставить картинку, замените на:
+        <button class="skin-btn" id="skinBtn" onclick="buy2()" style="background-image: url('тигр.jpg'); background-size: cover; background-position: center;"></button>
+        -->
+        <button class="skin-btn" id="skinBtn" onclick="buy2()">SUPER SKIN</button>
+    </div>
+
+    <script>
+        // Переменные
+        let score = 0;
+        let clickPower = 1;
+        let price = 10;
+        let skinPurchased = false;
+
+        // Функция клика
+        function on_click() {
+            score += clickPower;
+            document.getElementById('scoreLabel').textContent = `🍪 ${score}`;
+            update();
+        }
+
+        // Покупка улучшения
+        function buy() {
+            if (score >= price) {
+                score -= price;
+                clickPower += 1;
+                price = Math.floor(price * 1.5);
+                document.getElementById('scoreLabel').textContent = `🍪 ${score}`;
+                document.getElementById('shopBtn').textContent = `КУПИТЬ (${price})`;
+                update();
+            }
+        }
+
+        // Покупка скина
+        function buy2() {
+            if (score >= 10 && !skinPurchased) {
+                score -= 10;
+                skinPurchased = true;
+                document.getElementById('scoreLabel').textContent = `🍪 ${score}`;
+                
+                // Здесь меняем заглушку на картинку тигра
+                const clickBtn = document.getElementById('clickBtn');
+                clickBtn.style.backgroundImage = "url('тигр.jpg')";
+                clickBtn.style.backgroundSize = "cover";
+                clickBtn.style.backgroundPosition = "center";
+                clickBtn.textContent = ""; // Убираем emoji
+                
+                document.getElementById('skinBtn').style.display = 'none';
+                update();
+            }
+        }
+
+        // Обновление состояния
+        function update() {
+            const shopBtn = document.getElementById('shopBtn');
+            if (score >= price) {
+                shopBtn.disabled = false;
+                shopBtn.textContent = `можно (${price})`;
+            } else {
+                shopBtn.disabled = true;
+                shopBtn.textContent = `нельзя (${price})`;
+            }
+        }
+
+        // Инициализация
+        update();
+    </script>
+</body>
+</html>
