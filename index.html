@@ -33,11 +33,12 @@
             color: #333;
         }
 
-        /* ЗАГЛУШКА ДЛЯ КЛИКЕРА - замените на <img> */
         .clicker-btn {
             width: 200px;
             height: 200px;
-            background-color: #DDDDDD; /* Серая заглушка */
+            background-image: url('https://raw.githubusercontent.com/graficheskiy62-crypto/cliker/refs/heads/main/animal.jpg');
+            background-size: cover;
+            background-position: center;
             border: none;
             border-radius: 100px;
             cursor: pointer;
@@ -46,21 +47,16 @@
             align-items: center;
             justify-content: center;
             font-size: 80px;
-            transition: background-color 0.3s;
-            /* Если вставляете картинку, добавьте: background-size: cover; background-position: center; */
+            transition: transform 0.1s, background-color 0.3s;
         }
 
         .clicker-btn:hover {
-            background-color: #E8E6FF;
+            background-color: rgba(232, 230, 255, 0.5);
         }
 
-        /* Для картинки раскомментируйте и используйте:
-        .clicker-btn {
-            background-image: url('animal.jpg');
-            background-size: cover;
-            background-position: center;
+        .clicker-btn:active {
+            transform: scale(0.95);
         }
-        */
 
         .shop-label {
             font-size: 20px;
@@ -97,7 +93,7 @@
         .skin-btn {
             width: 200px;
             height: 200px;
-            background-color: #DDDDDD; /* Серая заглушка */
+            background-color: #DDDDDD;
             border: none;
             border-radius: 100px;
             cursor: pointer;
@@ -112,52 +108,33 @@
         .skin-btn:hover {
             background-color: #E8E6FF;
         }
-
-        /* Для картинки скина:
-        .skin-btn {
-            background-image: 'тигр.jpg');
-            background-size: cover;
-            background-position: center;
-        }
-        */
     </style>
 </head>
 <body>
     <div class="container">
         <div class="score-label" id="scoreLabel">🍪 0</div>
         
-        <!-- ЗАГЛУШКА КЛИКЕРА -->
-        <!-- Чтобы вставить картинку, замените этот button на:
-        <button class="clicker-btn" id="clickBtn" onclick="on_click()" style="background-image: url('animal.jpg'); background-size: cover; background-position: center;"></button>
-        -->
-        <button class="clicker-btn" id="clickBtn" onclick="on_click()">🐾</button>
+        <button class="clicker-btn" id="clickBtn" onclick="on_click()"></button>
         
         <div class="shop-label">Магазин улучшений</div>
         
         <button class="shop-btn" id="shopBtn" onclick="buy()">КУПИТЬ (10)</button>
         
-        <!-- ЗАГЛУШКА СКИНА -->
-        <!-- Чтобы вставить картинку, замените на:
-        <button class="skin-btn" id="skinBtn" onclick="buy2()" style="background-image: url('тигр.jpg'); background-size: cover; background-position: center;"></button>
-        -->
         <button class="skin-btn" id="skinBtn" onclick="buy2()">SUPER SKIN</button>
     </div>
 
     <script>
-        // Переменные
         let score = 0;
         let clickPower = 1;
         let price = 10;
         let skinPurchased = false;
 
-        // Функция клика
         function on_click() {
             score += clickPower;
             document.getElementById('scoreLabel').textContent = `🍪 ${score}`;
             update();
         }
 
-        // Покупка улучшения
         function buy() {
             if (score >= price) {
                 score -= price;
@@ -169,26 +146,23 @@
             }
         }
 
-        // Покупка скина
         function buy2() {
             if (score >= 10 && !skinPurchased) {
                 score -= 10;
                 skinPurchased = true;
                 document.getElementById('scoreLabel').textContent = `🍪 ${score}`;
                 
-                // Здесь меняем заглушку на картинку тигра
                 const clickBtn = document.getElementById('clickBtn');
-                clickBtn.style.backgroundImage = "url('тигр.jpg')";
+                clickBtn.style.backgroundImage = "url('https://raw.githubusercontent.com/graficheskiy62-crypto/cliker/refs/heads/main/animal.jpg')";
                 clickBtn.style.backgroundSize = "cover";
                 clickBtn.style.backgroundPosition = "center";
-                clickBtn.textContent = ""; // Убираем emoji
+                clickBtn.textContent = "";
                 
                 document.getElementById('skinBtn').style.display = 'none';
                 update();
             }
         }
 
-        // Обновление состояния
         function update() {
             const shopBtn = document.getElementById('shopBtn');
             if (score >= price) {
@@ -200,7 +174,6 @@
             }
         }
 
-        // Инициализация
         update();
     </script>
 </body>
